@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/brajkowski/messenger-api#readme",
   "devDependencies": {
-    "jest": "^27.0.6"
+    "jest": "^27.0.6",
+    "typescript": "^4.3.5"
   }
 }
