@@ -1,0 +1,19 @@
+{
+  "name": "messenger-api",
+  "version": "1.0.0",
+  "description": "A simple messenger API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brajkowski/messenger-api.git"
+  },
+  "author": "Brandon Rajkowski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brajkowski/messenger-api/issues"
+  },
+  "homepage": "https://github.com/brajkowski/messenger-api#readme"
+}
