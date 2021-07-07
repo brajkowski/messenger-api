@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/brajkowski/messenger-api/issues"
   },
-  "homepage": "https://github.com/brajkowski/messenger-api#readme"
+  "homepage": "https://github.com/brajkowski/messenger-api#readme",
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
 }
