@@ -13,6 +13,7 @@ export class MessengerService {
   activateUser(username: string, ws: WebSocket): void {
     this.usernameWsMap.set(username, ws);
     this.wsUsernameMap.set(ws, username);
+    console.debug(`[messenger-service] '${username}' has joined`);
   }
 
   deactivateUser(user: string | WebSocket): void {
@@ -27,6 +28,7 @@ export class MessengerService {
     }
     this.usernameWsMap.delete(username);
     this.wsUsernameMap.delete(ws);
+    console.debug(`[messenger-service] '${username}' has left`);
   }
 
   getActiveUsername(ws: WebSocket): string | undefined {
