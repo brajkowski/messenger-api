@@ -7,6 +7,8 @@ import {
 import { MessengerService } from '../messenger/messenger-service';
 
 export class WsController {
+  static readonly messageResource = '/message';
+  static readonly usernameQueryParam = 'username';
   static messageHandler(
     ws: WebSocket,
     data: WebSocket.Data,
@@ -40,16 +42,16 @@ export class WsController {
     let path: string;
     let username: string | null;
     try {
-      url = new URL(req.url!, 'http://localhost');
+      url = new URL(req.url!, 'http://localhost'); // Base can be any value.
     } catch (err) {
       console.debug('[ws-controller] could not parse new connection URL');
       ws.close();
       return;
     }
     path = url.pathname;
-    username = url.searchParams.get('username');
+    username = url.searchParams.get(WsController.usernameQueryParam);
     if (
-      path.toLocaleLowerCase() !== '/message' ||
+      path.toLocaleLowerCase() !== WsController.messageResource ||
       !username ||
       username.length < 1
     ) {
