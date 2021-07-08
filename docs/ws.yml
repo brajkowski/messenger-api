@@ -1,0 +1,67 @@
+asyncapi: '2.1.0'
+
+info:
+  title: Messenger API
+  version: 1.0.0
+  description: This service is responsible for sending messages between clients
+
+servers:
+  public:
+    url: messenger.guildeducation.com
+    protocol: ws
+
+channels:
+  /messages?{username}:
+    description: 'Send/receive messages to/from  users (connection example: ws://messenger.guildeducation.com/messages?username=MyUsername123)'
+    parameters:
+      username:
+        description: The username of the connecting user
+        schema:
+          type: string
+    publish:
+      message:
+        $ref: '#/components/messages/IncomingMessage'
+    subscribe:
+      message:
+        $ref: '#/components/messages/OutgoingMessage'
+
+components:
+  messages:
+    IncomingMessage:
+      description: A message incoming to the server from a client
+      payload:
+        type: object
+        properties:
+          recipient:
+            $ref: '#/components/schemas/recipient'
+          body:
+            $ref: '#/components/schemas/body'
+    OutgoingMessage:
+      description: A message outgoing from the server to a client
+      payload:
+        type: object
+        properties:
+          sender:
+            $ref: '#/components/schemas/sender'
+          body:
+            $ref: '#/components/schemas/body'
+          timestamp:
+            $ref: '#/components/schemas/timestamp'
+
+  schemas:
+    sender:
+      type: string
+      description: Username of the sender of the message
+      example: SomeUser123
+    recipient:
+      type: string
+      description: Username of the recipient of the message
+      example: AnotherUser789
+    body:
+      type: string
+      description: The body of the message
+      example: Hello! How are you?
+    timestamp:
+      type: string
+      description: The server-generated timestamp for the creation of the message (in ISO format)
+      example: '2021-07-08T09:05:31.064Z'
