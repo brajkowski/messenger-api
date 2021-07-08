@@ -105,3 +105,6 @@ dist
 
 # db files
 *.sqlite3
+
+# generated docs
+openapitools.json

@@ -1,0 +1,75 @@
+swagger: '2.0'
+info:
+  description: 'This service is responsible for providing a history of messages exchanged between users'
+  version: '1.0.0'
+  title: 'Messenger API'
+host: 'messenger.guildeducation.com'
+tags:
+  - name: 'messages'
+    description: 'Fetch a history of sent messages'
+schemes:
+  - 'http'
+paths:
+  /messages:
+    get:
+      tags:
+        - 'messages'
+      summary: 'Get a history of messages'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'recipient'
+          in: 'query'
+          description: 'Filter by messages sent to this recipient'
+          required: true
+          type: 'string'
+        - name: 'limit'
+          in: 'query'
+          description: 'Fetch either all messages in the last 30 days (limit=30days) or the most recent 100 messages (limit=100)'
+          required: true
+          type: 'string'
+        - name: 'sender'
+          in: 'query'
+          description: 'Narrow the results by filter for messages sent by a specific user'
+          type: 'string'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/Messages'
+        '400':
+          description: 'Invalid and/or missing query parameters'
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  Error:
+    type: 'object'
+    properties:
+      message:
+        type: string
+        description: A message that describes the error
+        example: recipient is a required parameter
+  Message:
+    type: 'object'
+    properties:
+      sender:
+        type: string
+        description: Username of the sender of the message
+        example: SomeUser123
+      recipient:
+        type: string
+        description: Username of the recipient of the message
+        example: AnotherUser789
+      body:
+        type: string
+        description: The body of the message
+        example: Hello! How are you?
+      timestamp:
+        type: string
+        description: The server-generated timestamp for the creation of the message (in ISO format)
+        example: '2021-07-08T09:05:31.064Z'
+  Messages:
+    type: 'array'
+    items:
+      $ref: '#/definitions/Message'

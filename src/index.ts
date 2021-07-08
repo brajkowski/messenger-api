@@ -18,8 +18,17 @@ const messengerPersistenceService = new MessengerPersistenceService(db);
 const messengerService = new MessengerService(messengerPersistenceService);
 const wsController = new WsController(messengerService);
 
+app.use(express.static(__dirname + '/docs'));
+
 app.get('/', (req, res) => {
-  res.send('<h1>Messenger API</h1>');
+  res.send(
+    `
+    <h1>Messenger API 1.0.0</h1>
+    <a href="/ws">WebSocket API Documentation</a>
+    <br>
+    <a href="/rest">REST API Documentation</a>
+    `
+  );
 });
 
 app.get('/messages', (req, res) => {

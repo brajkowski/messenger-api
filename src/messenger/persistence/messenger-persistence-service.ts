@@ -48,6 +48,8 @@ export class MessengerPersistenceService {
       filterClauses.push('LIMIT 100');
     }
 
+    filterClauses.push('ORDER BY timestamp DESC');
+
     const query = filterClauses.reduce(
       (agg, curr) => `${agg} ${curr}`,
       'SELECT * FROM messages'
