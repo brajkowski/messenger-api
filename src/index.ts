@@ -22,7 +22,12 @@ app.use(express.static(__dirname + '/docs'));
 
 app.get('/', (req, res) => {
   res.send(
-    '<h1>Messenger API 1.0.0</h1><a href="/ws">Websocket API Documentation</a>'
+    `
+    <h1>Messenger API 1.0.0</h1>
+    <a href="/ws">WebSocket API Documentation</a>
+    <br>
+    <a href="/rest">REST API Documentation</a>
+    `
   );
 });
 
