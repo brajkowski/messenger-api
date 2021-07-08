@@ -43,6 +43,7 @@ describe('WsController', () => {
   });
 
   afterAll(() => {
+    ws.removeEventListener('close'); // Remove listener that tries to log after tests are complete.
     ws.close();
     server.close();
   });
@@ -58,12 +59,12 @@ describe('WsController', () => {
   });
 
   it('should fail gracefully when username query param missing', () => {
-    req.url = '/message';
+    req.url = WsController.messageResource;
     expectNewConnectionFailureIsHandled();
   });
 
   it('should fail gracefully when username query param is empty', () => {
-    req.url = '/message?username=&otherparam=5';
+    req.url = `${WsController.messageResource}?${WsController.usernameQueryParam}=&otherparam=5`;
     expectNewConnectionFailureIsHandled();
   });
 
@@ -71,9 +72,9 @@ describe('WsController', () => {
     const onSpy = jest.spyOn(ws, 'on');
     const activateUserSpy = jest.spyOn(messengerService, 'activateUser');
     const expectedUsername = 'user';
-    req.url = `/message?username=${expectedUsername}`;
+    req.url = `${WsController.messageResource}?${WsController.usernameQueryParam}=${expectedUsername}`;
     wsController.handleNewConnection(ws, req);
-    expect(onSpy).toHaveBeenCalled();
+    expect(onSpy).toHaveBeenCalledTimes(2);
     expect(activateUserSpy).toHaveBeenCalledWith(expectedUsername, ws);
   });
 
