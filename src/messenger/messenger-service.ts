@@ -12,6 +12,8 @@ export class MessengerService {
 
   activateUser(username: string, ws: WebSocket): void {
     if (this.usernameWsMap.has(username)) {
+      ws.removeEventListener('close');
+      ws.close();
       return;
     }
     this.usernameWsMap.set(username, ws);
