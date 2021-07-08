@@ -1,11 +1,15 @@
 import http from 'http';
 import net from 'net';
+import { Database } from 'sqlite3';
 import WebSocket, { Server } from 'ws';
 import { IncomingMessage } from '../../src/messenger/message';
 import { MessengerService } from '../../src/messenger/messenger-service';
+import { MessengerPersistenceService } from '../../src/messenger/persistence/messenger-persistence-service';
 import { WsController } from '../../src/ws/ws-controller';
 
 describe('WsController', () => {
+  let db = new Database(':memory:');
+  let messengerPersistenceService = new MessengerPersistenceService(db);
   let wsController: WsController;
   let messengerService: MessengerService;
   let ws: WebSocket;
@@ -37,7 +41,7 @@ describe('WsController', () => {
   });
 
   beforeEach(() => {
-    messengerService = new MessengerService();
+    messengerService = new MessengerService(messengerPersistenceService);
     wsController = new WsController(messengerService);
     req = new http.IncomingMessage(new net.Socket());
   });

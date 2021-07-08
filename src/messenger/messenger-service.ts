@@ -1,11 +1,14 @@
 import WebSocket from 'ws';
 import { OutgoingMessage } from './message';
+import { MessengerPersistenceService } from './persistence/messenger-persistence-service';
 
 export class MessengerService {
   protected usernameWsMap: Map<string, WebSocket>;
   protected wsUsernameMap: Map<WebSocket, string>;
 
-  constructor() {
+  constructor(
+    protected messengerPersistenceService: MessengerPersistenceService
+  ) {
     this.usernameWsMap = new Map();
     this.wsUsernameMap = new Map();
   }
@@ -51,5 +54,9 @@ export class MessengerService {
       timestamp: new Date(),
     };
     this.getActiveWebSocket(recipient)?.send(JSON.stringify(outgoingMessage));
+    this.messengerPersistenceService.saveMessage({
+      ...outgoingMessage,
+      recipient,
+    });
   }
 }
