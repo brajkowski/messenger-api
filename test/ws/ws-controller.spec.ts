@@ -31,9 +31,9 @@ describe('WsController', () => {
   };
 
   beforeAll((done) => {
-    server = new Server({ port: 8080 });
+    server = new Server({ port: 8082 });
     server.on('listening', () => {
-      ws = new WebSocket('ws://localhost:8080');
+      ws = new WebSocket('ws://localhost:8082');
       ws.on('open', () => {
         done();
       });
