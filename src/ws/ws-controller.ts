@@ -66,6 +66,7 @@ export class WsController {
     ws.on('message', (data: WebSocket.Data) =>
       WsController.messageHandler(ws, data, this.messengerService)
     );
+    ws.on('close', () => this.messengerService.deactivateUser(ws));
     this.messengerService.activateUser(username, ws);
   }
 }

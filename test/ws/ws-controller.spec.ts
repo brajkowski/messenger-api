@@ -43,6 +43,7 @@ describe('WsController', () => {
   });
 
   afterAll(() => {
+    ws.removeEventListener('close'); // Remove listener that tries to log after tests are complete.
     ws.close();
     server.close();
   });
@@ -73,7 +74,7 @@ describe('WsController', () => {
     const expectedUsername = 'user';
     req.url = `${WsController.messageResource}?${WsController.usernameQueryParam}=${expectedUsername}`;
     wsController.handleNewConnection(ws, req);
-    expect(onSpy).toHaveBeenCalled();
+    expect(onSpy).toHaveBeenCalledTimes(2);
     expect(activateUserSpy).toHaveBeenCalledWith(expectedUsername, ws);
   });
 
