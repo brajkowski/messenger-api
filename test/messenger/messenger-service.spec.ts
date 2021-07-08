@@ -75,11 +75,4 @@ describe('MessengerService', () => {
       )
     ).not.toThrow();
   });
-
-  it('should prevent a user from using a username that is already active', () => {
-    const username = 'user';
-    messengerService.activateUser(username, ws);
-    messengerService.activateUser(username, {} as WebSocket);
-    expect(messengerService.getActiveWebSocket(username)).toEqual(ws);
-  });
 });
