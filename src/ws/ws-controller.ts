@@ -7,7 +7,7 @@ import {
 import { MessengerService } from '../messenger/messenger-service';
 
 export class WsController {
-  static readonly messageResource = '/message';
+  static readonly messageResource = '/messages';
   static readonly usernameQueryParam = 'username';
   static messageHandler(
     ws: WebSocket,
