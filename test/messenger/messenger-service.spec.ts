@@ -1,15 +1,19 @@
+import { Database } from 'sqlite3';
 import WebSocket, { Server } from 'ws';
 import { MessengerService } from '../../src/messenger/messenger-service';
+import { MessengerPersistenceService } from '../../src/messenger/persistence/messenger-persistence-service';
 
 describe('MessengerService', () => {
+  let db = new Database(':memory:');
+  let messengerPersistenceService = new MessengerPersistenceService(db);
   let messengerService: MessengerService;
   let ws: WebSocket;
   let server: Server;
 
   beforeAll((done) => {
-    server = new Server({ port: 8080 });
+    server = new Server({ port: 8081 });
     server.on('listening', () => {
-      ws = new WebSocket('ws://localhost:8080');
+      ws = new WebSocket('ws://localhost:8081');
       ws.on('open', () => {
         done();
       });
@@ -17,7 +21,7 @@ describe('MessengerService', () => {
   });
 
   beforeEach(() => {
-    messengerService = new MessengerService();
+    messengerService = new MessengerService(messengerPersistenceService);
   });
 
   afterAll(() => {
@@ -60,6 +64,21 @@ describe('MessengerService', () => {
       expectedBody
     );
     expect(sendSpy).toHaveBeenCalled();
+  });
+
+  it('should save the message being sent', () => {
+    const expectedSender = 'sender';
+    const expectedRecipient = 'recipient';
+    const expectedBody = 'my message!';
+    const saveSpy = jest.spyOn(messengerPersistenceService, 'saveMessage');
+    jest.spyOn(ws, 'send');
+    messengerService.activateUser(expectedRecipient, ws);
+    messengerService.sendMessage(
+      expectedSender,
+      expectedRecipient,
+      expectedBody
+    );
+    expect(saveSpy).toHaveBeenCalled();
   });
 
   it('should silently fail while sending messages to recipients that are not active', () => {
