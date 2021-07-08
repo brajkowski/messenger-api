@@ -11,6 +11,9 @@ export class MessengerService {
   }
 
   activateUser(username: string, ws: WebSocket): void {
+    if (this.usernameWsMap.has(username)) {
+      return;
+    }
     this.usernameWsMap.set(username, ws);
     this.wsUsernameMap.set(ws, username);
     console.debug(`[messenger-service] '${username}' has joined`);
